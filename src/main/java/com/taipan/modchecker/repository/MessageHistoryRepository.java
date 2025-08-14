@@ -1,4 +1,7 @@
 package com.taipan.modchecker.repository;
 
-public class MessageHistoryRepository {
+import com.taipan.modchecker.model.MessageHistory;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MessageHistoryRepository extends JpaRepository<MessageHistory, Long> {
 }

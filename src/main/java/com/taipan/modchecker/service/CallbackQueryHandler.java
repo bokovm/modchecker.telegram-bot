@@ -2,19 +2,21 @@ package com.taipan.modchecker.service;
 
 import com.taipan.modchecker.bot.BotCore;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Service
-public class DocumentHandler {
+public class CallbackQueryHandler {
 
     public void handle(Update update, BotCore bot) {
-        String fileName = update.getMessage().getDocument().getFileName();
-        long chatId = update.getMessage().getChatId();
+        String data = update.getCallbackQuery().getData();
+        long chatId = update.getCallbackQuery().getMessage().getChatId();
 
+        // Пока просто отвечаем, но можно интегрировать с BotService
         SendMessage response = SendMessage.builder()
                 .chatId(String.valueOf(chatId))
-                .text("📄 Файл получен: " + fileName + "\n\nФункционал обработки модов в разработке!")
+                .text("Вы нажали кнопку: `" + data + "`")
+                .parseMode("Markdown")
                 .build();
 
         try {
