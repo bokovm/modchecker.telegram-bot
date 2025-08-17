@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class MessageHistory {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,5 +19,5 @@ public class MessageHistory {
     private UserEntity user;
 
     private String messageText;
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
 }

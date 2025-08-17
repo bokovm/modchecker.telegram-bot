@@ -1,26 +1,46 @@
 package com.taipan.modchecker.router;
 
 import com.taipan.modchecker.bot.BotCore;
+import com.taipan.modchecker.model.MessageHistory;
+import com.taipan.modchecker.model.UserEntity;
+import com.taipan.modchecker.service.MessageHistoryService;
+import com.taipan.modchecker.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class UpdateRouter {
+    private final UserService userService;
+    private final MessageHistoryService messageHistoryService;
+
+    public UpdateRouter(UserService userService, MessageHistoryService messageHistoryService) {
+        this.userService = userService;
+        this.messageHistoryService = messageHistoryService;
+    }
 
     public void route(Update update, BotCore bot) {
         if (update.hasMessage()) {
-            if (update.getMessage().hasText()) {
-                // Временная реализация - будет заменена после добавления CommandHandler
-                handleTextMessage(update, bot);
-            } else if (update.getMessage().hasDocument()) {
-                handleDocument(update, bot);
-            }
-        } else if (update.hasCallbackQuery()) {
-            handleCallbackQuery(update, bot);
+            org.telegram.telegrambots.meta.api.objects.User tgUser = update.getMessage().getFrom();
+            String messageText = update.getMessage().getText();
+            long chatId = update.getMessage().getChatId();
+
+            // Сохраняем пользователя
+            UserEntity user = userService.getOrCreateUser(tgUser);
+            System.out.println("👤 User saved: " + user.getUsername());
+
+            // Сохраняем историю сообщений
+            MessageHistory message = new MessageHistory();
+            message.setUser(user);
+            message.setMessageText(messageText);
+            messageHistoryService.saveMessage(message);
+            System.out.println("💬 Message saved: " + messageText);
+
+            // Обработка сообщения
+            handleMessage(update, bot);
         }
     }
 
-    private void handleTextMessage(Update update, BotCore bot) {
+    private void handleMessage(Update update, BotCore bot) {
         String text = update.getMessage().getText();
         long chatId = update.getMessage().getChatId();
 

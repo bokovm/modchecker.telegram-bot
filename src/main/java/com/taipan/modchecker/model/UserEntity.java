@@ -11,20 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long telegramId;
     private String username;
     private String firstName;
     private String lastName;
-    private Long telegramId;
-
-    public UserEntity() {}
-
-    public UserEntity(Long telegramId, String username) {
-        this.telegramId = telegramId;
-        this.username = username;
-    }
 }
