@@ -1,6 +1,6 @@
-package com.taipan.modchecker.service;
+package com.taipan.userbot.service;
 
-import com.taipan.modchecker.command.BotCommand;
+import com.taipan.userbot.command.BotCommand;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -22,8 +22,9 @@ public class BotService {
         this.unknownCommand = unknownCommand;
     }
 
-    public SendMessage processCommand(String commandText, long chatId) {
-        BotCommand command = commands.getOrDefault(commandText, unknownCommand);
-        return command.execute(chatId);
+    public SendMessage processCommand(String input, long chatId) {
+        String command = input.split(" ")[0]; // Берем первое слово
+        return commands.getOrDefault(command, unknownCommand)
+                .execute(chatId);
     }
 }
