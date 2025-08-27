@@ -1,10 +1,10 @@
-package com.taipan.modchecker.router;
+package com.taipan.userbot.router;
 
-import com.taipan.modchecker.bot.BotCore;
-import com.taipan.modchecker.model.MessageHistory;
-import com.taipan.modchecker.model.UserEntity;
-import com.taipan.modchecker.service.MessageHistoryService;
-import com.taipan.modchecker.service.UserService;
+import com.taipan.userbot.bot.BotCore;
+import com.taipan.userbot.model.MessageHistory;
+import com.taipan.userbot.model.UserEntity;
+import com.taipan.userbot.service.MessageHistoryService;
+import com.taipan.userbot.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

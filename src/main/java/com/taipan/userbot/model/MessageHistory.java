@@ -1,4 +1,4 @@
-package com.taipan.modchecker.model;
+package com.taipan.userbot.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

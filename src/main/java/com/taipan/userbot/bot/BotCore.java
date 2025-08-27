@@ -1,7 +1,7 @@
-package com.taipan.modchecker.bot;
+package com.taipan.userbot.bot;
 
-import com.taipan.modchecker.config.TelegramBotConfig;
-import com.taipan.modchecker.router.UpdateRouter;
+import com.taipan.userbot.config.TelegramBotConfig;
+import com.taipan.userbot.router.UpdateRouter;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;

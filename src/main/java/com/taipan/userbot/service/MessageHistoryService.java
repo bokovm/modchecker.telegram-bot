@@ -1,7 +1,7 @@
-package com.taipan.modchecker.service;
+package com.taipan.userbot.service;
 
-import com.taipan.modchecker.model.MessageHistory;
-import com.taipan.modchecker.repository.MessageHistoryRepository;
+import com.taipan.userbot.model.MessageHistory;
+import com.taipan.userbot.repository.MessageHistoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

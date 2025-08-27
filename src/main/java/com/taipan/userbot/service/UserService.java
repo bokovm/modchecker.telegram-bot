@@ -1,7 +1,7 @@
-package com.taipan.modchecker.service;
+package com.taipan.userbot.service;
 
-import com.taipan.modchecker.model.UserEntity;
-import com.taipan.modchecker.repository.UserRepository;
+import com.taipan.userbot.model.UserEntity;
+import com.taipan.userbot.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.taipan.modchecker.repository;
+package com.taipan.userbot.repository;
 
-import com.taipan.modchecker.model.MessageHistory;
+import com.taipan.userbot.model.MessageHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MessageHistoryRepository extends JpaRepository<MessageHistory, Long> {

@@ -1,4 +1,42 @@
 package com.taipan.shared.service;
 
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Service
 public class BotManagerService {
+    private final Map<String, TelegramLongPollingBot> bots = new ConcurrentHashMap<>();
+
+    public void registerBot(String botId, TelegramLongPollingBot bot) {
+        bots.put(botId, bot);
+        System.out.println("✅ Registered bot: " + botId + " - " + bot.getBotUsername());
+    }
+
+    public boolean sendAsBot(String botId, long chatId, String text) {
+        TelegramLongPollingBot bot = bots.get(botId);
+        if (bot == null) {
+            System.err.println("❌ Bot not found: " + botId);
+            return false;
+        }
+
+        try {
+            bot.execute(SendMessage.builder()
+                    .chatId(String.valueOf(chatId))
+                    .text(text)
+                    .build());
+            return true;
+        } catch (TelegramApiException e) {
+            System.err.println("❌ Error sending via " + botId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Новый метод для получения списка зарегистрированных ботов
+    public Map<String, TelegramLongPollingBot> getRegisteredBots() {
+        return new ConcurrentHashMap<>(bots);
+    }
 }

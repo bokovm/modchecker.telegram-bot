@@ -1,4 +1,4 @@
-package com.taipan.modchecker.command;
+package com.taipan.userbot.command;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

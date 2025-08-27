@@ -1,6 +1,6 @@
-package com.taipan.modchecker.service;
+package com.taipan.userbot.service;
 
-import com.taipan.modchecker.bot.BotCore;
+import com.taipan.userbot.bot.BotCore;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
