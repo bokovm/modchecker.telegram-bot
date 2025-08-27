@@ -1,5 +1,6 @@
 package com.taipan.adminbot.command;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -7,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
+@Qualifier("HelpCommand")
 public class HelpCommand implements AdminCommand {
 
     @Override
