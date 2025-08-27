@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class BotManagerService {
@@ -35,7 +36,12 @@ public class BotManagerService {
         }
     }
 
-    // Новый метод для получения списка зарегистрированных ботов
+    public String getRegisteredBotsList() {
+        return bots.entrySet().stream()
+                .map(entry -> "• " + entry.getKey() + " - " + entry.getValue().getBotUsername())
+                .collect(Collectors.joining("\n"));
+    }
+
     public Map<String, TelegramLongPollingBot> getRegisteredBots() {
         return new ConcurrentHashMap<>(bots);
     }

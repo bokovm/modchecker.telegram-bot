@@ -1,55 +1,63 @@
 package com.taipan.adminbot.command;
 
-import com.taipan.adminbot.AdminBotApplication;
-import com.taipan.adminbot.service.AdminService;
+import com.taipan.adminbot.service.AdminManageService;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-public class AdminManageCommand {
-    private final AdminService adminService;
+public class AdminManageCommand implements AdminCommand {
 
-    public AdminManageCommand(AdminService adminService) {
-        this.adminService = adminService;
+    private final AdminManageService adminManageService;
+
+    public AdminManageCommand(AdminManageService adminManageService) {
+        this.adminManageService = adminManageService;
     }
 
-    public void handle(Message message, AdminBotApplication adminBot) {
+    @Override
+    public String getCommandName() {
+        return "/admin";
+    }
+
+    @Override
+    public void execute(Message message, AbsSender bot) {
         String[] args = message.getText().split(" ", 3);
         Long senderId = message.getFrom().getId();
 
-        // Только существующие администраторы могут добавлять/удалять других
-        if (!adminService.isAdmin(senderId)) {
-            sendResponse(adminBot, message.getChatId(), "❌ Недостаточно прав.");
+        if (!adminManageService.isAdmin(senderId)) {
+            sendResponse(bot, message.getChatId(), "❌ Недостаточно прав.");
             return;
         }
 
         if (args.length < 2) {
-            sendResponse(adminBot, message.getChatId(), "❌ Формат: /admin [add|remove] @username");
+            sendResponse(bot, message.getChatId(), "❌ Формат: /admin [add|remove] @username");
             return;
         }
 
         String action = args[1];
         String username = args.length > 2 ? args[2] : "";
 
+        String response;
         if ("add".equalsIgnoreCase(action)) {
-            // Логика добавления администратора
-            sendResponse(adminBot, message.getChatId(), "✅ Команда добавления администратора");
+            response = adminManageService.addAdmin(username);
         } else if ("remove".equalsIgnoreCase(action)) {
-            // Логика удаления администратора
-            sendResponse(adminBot, message.getChatId(), "✅ Команда удаления администратора");
+            response = adminManageService.removeAdmin(username);
         } else {
-            sendResponse(adminBot, message.getChatId(), "❌ Неизвестное действие: " + action);
+            response = "❌ Неизвестное действие: " + action;
         }
+
+        sendResponse(bot, message.getChatId(), response);
     }
 
-    private void sendResponse(AdminBotApplication adminBot, Long chatId, String text) {
+    private void sendResponse(AbsSender bot, Long chatId, String text) {
+        SendMessage response = SendMessage.builder()
+                .chatId(chatId.toString())
+                .text(text)
+                .build();
         try {
-            adminBot.execute(SendMessage.builder()
-                    .chatId(chatId.toString())
-                    .text(text)
-                    .build());
+            bot.execute(response);
         } catch (TelegramApiException e) {
             System.err.println("❌ Ошибка отправки ответа: " + e.getMessage());
         }
