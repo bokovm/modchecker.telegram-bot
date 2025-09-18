@@ -17,7 +17,6 @@ public class MessageHistory {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
     private String messageText;
     private LocalDateTime timestamp = LocalDateTime.now();
 }
