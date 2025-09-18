@@ -2,7 +2,7 @@ package com.taipan.userbot.command;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("userHelpCommand")
 public class HelpCommand extends AbstractBotCommand {
 
     @Override
