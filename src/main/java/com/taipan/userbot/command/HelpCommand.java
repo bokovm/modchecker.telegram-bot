@@ -1,8 +1,9 @@
 package com.taipan.userbot.command;
 
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.springframework.stereotype.Component;
 
-public class HelpCommand implements BotCommand {
+@Component
+public class HelpCommand extends AbstractBotCommand {
 
     @Override
     public String getCommandName() {
@@ -10,13 +11,10 @@ public class HelpCommand implements BotCommand {
     }
 
     @Override
-    public SendMessage execute(long chatId) {
-        return SendMessage.builder()
-                .chatId(String.valueOf(chatId))
-                .text("📚 Помощь по боту:\n\n"
-                        + "/start - Начать работу\n"
-                        + "/help - Получить помощь\n"
-                        + "/check - Проверить моды")
-                .build();
+    protected String getText(long chatId) {
+        return "📚 Помощь по боту:\n\n"
+                + "/start - Начать работу\n"
+                + "/help - Получить помощь\n"
+                + "/check - Проверить моды";
     }
 }
