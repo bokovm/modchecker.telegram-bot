@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@PropertySource("classpath:callback_query.properties")
+@PropertySource("classpath:UserBotHandlerMessages/callback_query.properties")
 @Service
 public class CallbackQueryHandler {
 
