@@ -1,6 +1,7 @@
-package com.taipan.userbot.service;
+package com.taipan.userbot.handler;
 
 import com.taipan.userbot.bot.BotCore;
+import com.taipan.userbot.service.BotService;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

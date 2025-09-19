@@ -1,4 +1,4 @@
-package com.taipan.userbot.service;
+package com.taipan.userbot.handler;
 
 import com.taipan.userbot.bot.BotCore;
 import org.springframework.stereotype.Service;

@@ -2,9 +2,9 @@ package com.taipan.userbot.router;
 
 import com.taipan.userbot.bot.BotCore;
 import com.taipan.userbot.middleware.UpdateInterceptor;
-import com.taipan.userbot.service.CallbackQueryHandler;
-import com.taipan.userbot.service.CommandHandler;
-import com.taipan.userbot.service.DocumentHandler;
+import com.taipan.userbot.handler.CallbackQueryHandler;
+import com.taipan.userbot.handler.CommandHandler;
+import com.taipan.userbot.handler.DocumentHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
