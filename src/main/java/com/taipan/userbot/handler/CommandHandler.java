@@ -2,10 +2,12 @@ package com.taipan.userbot.handler;
 
 import com.taipan.userbot.bot.BotCore;
 import com.taipan.userbot.service.BotService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+@Slf4j
 @Service
 public class CommandHandler {
 
@@ -24,7 +26,7 @@ public class CommandHandler {
         try {
             bot.execute(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Ошибка обработки сообщения от пользователя {}, дополнтельные данные - {}", chatId, commandText, e);
         }
     }
 }
