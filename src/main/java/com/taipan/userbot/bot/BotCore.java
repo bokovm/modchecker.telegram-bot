@@ -3,6 +3,7 @@ package com.taipan.userbot.bot;
 import com.taipan.userbot.config.TelegramBotConfig;
 import com.taipan.userbot.router.UpdateRouter;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,14 +13,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+@Slf4j
 @Component
-@Primary  // Добавляем эту аннотацию
+@Primary
 public class BotCore extends TelegramLongPollingBot {
 
     private final TelegramBotConfig config;
     private final UpdateRouter updateRouter;
 
     public BotCore(TelegramBotConfig config, UpdateRouter updateRouter) {
+        super(config.getToken());
         this.config = config;
         this.updateRouter = updateRouter;
     }
@@ -32,17 +35,17 @@ public class BotCore extends TelegramLongPollingBot {
 
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(this);
-            System.out.println("✅ Бот запущен!");
+            log.info("Пользовательский бот запущен!");
         } catch (TelegramApiException e) {
             if (e instanceof TelegramApiRequestException apiReqEx) {
-                if (!apiReqEx.getMessage().contains("404") && !apiReqEx.getMessage().contains("Conflict")) {
-                    e.printStackTrace();
+                if (apiReqEx.getMessage().contains("404") || apiReqEx.getMessage().contains("Conflict")) {
+                    log.debug("Игнорируемая ОШИБКА при очистке вебхука {}", e.getMessage());
                 }
             } else {
-                e.printStackTrace();
+                log.error("Ошибка при регистрации бота {}", e.getMessage(), e);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Неожиданная ошибка при инициализации бота {}", e.getMessage(), e);
         }
     }
 
@@ -51,7 +54,7 @@ public class BotCore extends TelegramLongPollingBot {
         try {
             updateRouter.route(update, this);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Ошибка обработки update: {}", e.getMessage(), e);;
         }
     }
 

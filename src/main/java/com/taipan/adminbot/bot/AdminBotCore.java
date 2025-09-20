@@ -4,6 +4,7 @@ import com.taipan.adminbot.config.AdminBotConfig;
 import com.taipan.adminbot.router.AdminUpdateRouter;
 import com.taipan.shared.service.BotManagerService;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+@Slf4j
 @Component
 public class AdminBotCore extends TelegramLongPollingBot {
 
@@ -34,9 +36,9 @@ public class AdminBotCore extends TelegramLongPollingBot {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(this);
             botManagerService.registerBot(BOT_ID, this);
-            System.out.println("✅ Админ бот запущен и зарегистрирован!");
+            log.info("Админ бот запущен и зарегистрирован!");
         } catch (TelegramApiException e) {
-            System.err.println("❌ Ошибка регистрации админ-бота: " + e.getMessage());
+            log.error("Ошибка регистрации админ-бота: {}", e.getMessage(), e);
         }
     }
 

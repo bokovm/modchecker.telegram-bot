@@ -1,12 +1,14 @@
 package com.taipan.userbot.handler;
 
 import com.taipan.userbot.bot.BotCore;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@Slf4j
 @PropertySource("classpath:UserBotHandlerMessages/callback_query.properties")
 @Service
 public class CallbackQueryHandler {
@@ -31,7 +33,7 @@ public class CallbackQueryHandler {
         try {
             bot.execute(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Ошибка обработки callback от пользователя {}: данные кнопки - {} ",chatId, data, e);
         }
     }
 }
