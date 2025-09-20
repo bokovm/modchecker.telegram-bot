@@ -1,5 +1,6 @@
 package com.taipan.shared.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -8,19 +9,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class BotManagerService {
     private final Map<String, TelegramLongPollingBot> bots = new ConcurrentHashMap<>();
 
     public void registerBot(String botId, TelegramLongPollingBot bot) {
         bots.put(botId, bot);
-        System.out.println("✅ Registered bot: " + botId + " - " + bot.getBotUsername());
+        log.info("Registered bot: {} - {} ", botId, bot.getBotUsername());
     }
 
     public boolean sendAsBot(String botId, long chatId, String text) {
         TelegramLongPollingBot bot = bots.get(botId);
         if (bot == null) {
-            System.err.println("❌ Bot not found: " + botId);
+            log.error("Bot not found: {}", botId);
             return false;
         }
 
@@ -31,7 +33,7 @@ public class BotManagerService {
                     .build());
             return true;
         } catch (TelegramApiException e) {
-            System.err.println("❌ Error sending via " + botId + ": " + e.getMessage());
+            log.error("Error sending via {}: {}", botId, e.getMessage(), e);
             return false;
         }
     }
