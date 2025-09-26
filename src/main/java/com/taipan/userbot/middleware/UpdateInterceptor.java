@@ -4,7 +4,6 @@ import com.taipan.userbot.model.MessageHistory;
 import com.taipan.userbot.model.UserEntity;
 import com.taipan.userbot.service.MessageHistoryService;
 import com.taipan.userbot.service.UserService;
-import com.taipan.userbot.bot.BotCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

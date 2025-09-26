@@ -1,5 +1,6 @@
 package com.taipan.adminbot.command;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -7,6 +8,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+@Slf4j
 @Component
 @Qualifier("HelpCommand")
 public class HelpCommand implements AdminCommand {
@@ -31,8 +33,9 @@ public class HelpCommand implements AdminCommand {
 
         try {
             bot.execute(response);
+            log.debug("Справка отправлена в чат {}", message.getChatId());
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            log.error("Не удалось отправить справку в чат {}: {}", message.getChatId(), e.getMessage(), e);
         }
     }
 }

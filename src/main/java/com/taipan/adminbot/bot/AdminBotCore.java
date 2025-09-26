@@ -2,49 +2,45 @@ package com.taipan.adminbot.bot;
 
 import com.taipan.adminbot.config.AdminBotConfig;
 import com.taipan.adminbot.router.AdminUpdateRouter;
+import com.taipan.core.bot.BaseBot;
 import com.taipan.shared.service.BotManagerService;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Slf4j
 @Component
-public class AdminBotCore extends TelegramLongPollingBot {
-
+public class AdminBotCore extends BaseBot {
     private final AdminBotConfig config;
     private final AdminUpdateRouter updateRouter;
-    private final BotManagerService botManagerService;
-    private final String BOT_ID = "admin-bot";
 
     public AdminBotCore(AdminBotConfig config,
                         AdminUpdateRouter updateRouter,
                         BotManagerService botManagerService) {
-        super(config.getToken());
+        super(
+                config.getToken(),
+                "admin-bot",
+                "ModChecker Admin Bot",
+                botManagerService
+        );
         this.config = config;
         this.updateRouter = updateRouter;
-        this.botManagerService = botManagerService;
     }
 
-    @PostConstruct
-    public void init() {
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(this);
-            botManagerService.registerBot(BOT_ID, this);
-            log.info("Админ бот запущен и зарегистрирован!");
-        } catch (TelegramApiException e) {
-            log.error("Ошибка регистрации админ-бота: {}", e.getMessage(), e);
-        }
+    @Override
+    protected void postRegistration() throws Exception {
+        // Регистрируем админ-бота в BotManagerService
+        botManagerService.registerBot(getBotId(), this);
+        log.debug("🔄 [{}] Зарегистрирован в BotManagerService", getBotId());
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        updateRouter.route(update, this);
+        try {
+            updateRouter.route(update, this);
+        } catch (Exception e) {
+            log.error("❌ [{}] Ошибка обработки update: {}", getBotId(), e.getMessage(), e);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.taipan.adminbot.command;
 
 import com.taipan.adminbot.service.AdminManageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -8,6 +9,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+@Slf4j
 @Component
 @Qualifier("AdminManageCommand")
 public class AdminManageCommand implements AdminCommand {
@@ -61,7 +63,7 @@ public class AdminManageCommand implements AdminCommand {
         try {
             bot.execute(response);
         } catch (TelegramApiException e) {
-            System.err.println("❌ Ошибка отправки ответа: " + e.getMessage());
+            log.error("Ошибка отправки ответа: {} ", e.getMessage(), e);
         }
     }
 }
